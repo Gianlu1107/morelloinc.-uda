@@ -12,26 +12,43 @@ if ('webkitSpeechRecognition' in window) {
   function formatTranscript(text) {
     text = text.trim().toLowerCase();
 
-    if (!/[.?!]$/.test(text) && text.split(" ").length > 6) {
-      text += ".";
-    }
+    // se il testo contiene frasi separate logicamente, segmentale
+    const chunks = text.split(/(?:(?:ma|perché|poi|allora|e)\s)/g);
+    let result = chunks
+      .map(chunk => {
+        chunk = chunk.trim();
+        if (!chunk) return "";
 
-    text = text.replace(/\s*,\s*/g, ", ");
-    text = text.replace(/\s*\.\s*/g, "."); // niente spazio prima del punto
-    text = text.replace(/([a-z])\.(?=[^\s])/g, "$1. "); // assicura che ci sia uno spazio DOPO il punto se manca
-    text = text.replace(/\s+/g, " ");
+        // se è una domanda
+        if (/come|perché|dove|quando|quanto|chi|cosa/.test(chunk.split(" ")[0])) {
+          return chunk + "?";
+        }
 
-    return text + " ";
+        // se è un'affermazione forte
+        if (/^che bello|fantastico|incredibile|non ci credo/.test(chunk)) {
+          return chunk + "!";
+        }
+
+        // frase normale
+        return chunk + ".";
+      })
+      .join(" ");
+
+    result = result.replace(/\s+/g, " ");
+    result = result.replace(/\s([?.!])/g, "$1"); // rimuove spazi prima della punteggiatura
+    return result + " ";
   }
 
   micBtn.addEventListener("click", () => {
     if (micBtn.classList.contains("listening")) {
       recognition.stop();
       micBtn.classList.remove("listening");
+      micBtn.textContent = "🎙️ inizia dettatura";
       statusText.textContent = "dettatura disattivata";
     } else {
       recognition.start();
       micBtn.classList.add("listening");
+      micBtn.textContent = "🛑 stoppa dettatura";
       statusText.textContent = "sto ascoltando...";
     }
   });
