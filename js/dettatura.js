@@ -17,7 +17,8 @@ if ('webkitSpeechRecognition' in window) {
     }
 
     text = text.replace(/\s*,\s*/g, ", ");
-    text = text.replace(/\s*\.\s*/g, ". ");
+    text = text.replace(/\s*\.\s*/g, "."); // niente spazio prima del punto
+    text = text.replace(/([a-z])\.(?=[^\s])/g, "$1. "); // assicura che ci sia uno spazio DOPO il punto se manca
     text = text.replace(/\s+/g, " ");
 
     return text + " ";
