@@ -12,30 +12,15 @@ if ('webkitSpeechRecognition' in window) {
   function formatTranscript(text) {
     text = text.trim().toLowerCase();
 
-    // se il testo contiene frasi separate logicamente, segmentale
-    const chunks = text.split(/(?:(?:ma|perché|poi|allora|e)\s)/g);
-    let result = chunks
-      .map(chunk => {
-        chunk = chunk.trim();
-        if (!chunk) return "";
+    let result = text;
 
-        // se è una domanda
-        if (/come|perché|dove|quando|quanto|chi|cosa/.test(chunk.split(" ")[0])) {
-          return chunk + "?";
-        }
-
-        // se è un'affermazione forte
-        if (/^che bello|fantastico|incredibile|non ci credo/.test(chunk)) {
-          return chunk + "!";
-        }
-
-        // frase normale
-        return chunk + ".";
-      })
-      .join(" ");
+    if (!/[.?!]$/.test(result) && result.split(" ").length > 8) {
+      result += ".";
+    }
 
     result = result.replace(/\s+/g, " ");
     result = result.replace(/\s([?.!])/g, "$1"); // rimuove spazi prima della punteggiatura
+    result = result.replace(/([a-z])\.(?=[^\s])/g, "$1. "); // assicura spazio dopo punto se manca
     return result + " ";
   }
 
