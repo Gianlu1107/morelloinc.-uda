@@ -36,12 +36,10 @@ if ('webkitSpeechRecognition' in window) {
   });
 
   recognition.onresult = (event) => {
-    let transcript = '';
-    for (let i = event.resultIndex; i < event.results.length; ++i) {
-      transcript += event.results[i][0].transcript;
+    let transcript = event.results[event.resultIndex][0].transcript;
+    if (event.results[event.resultIndex].isFinal) {
+      outputField.value += formatTranscript(transcript);
     }
-
-    outputField.value += formatTranscript(transcript);
   };
 
   recognition.onerror = (event) => {
