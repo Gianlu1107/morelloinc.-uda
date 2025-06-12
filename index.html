@@ -1,1 +1,87 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dream Log</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> <!-- per le notifiche popup -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- per AJAX -->
+</head>
+<body>
+  <!-- HEADER -->
+  <header>
+    <div class="logo-container">
+      <h1>Dream Log</h1>
+      <p>Il diario dei tuoi sogni, dove ogni sogno conta.</p>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="record.html">Aggiungi Sogno</a></li>
+        <li><a href="php/logout.php">Logout</a></li>
+      </ul>
+    </nav>
+  </header>
 
+  <main>
+    <!-- INTRO -->
+    <section class="intro">
+      <h2>I tuoi sogni più recenti</h2>
+      <p>Ogni sogno è un'opportunità per imparare di più su te stesso. Guarda i tuoi sogni recenti qui sotto.</p>
+    </section>
+
+    <!-- DETTA E SCRIVI -->
+    <section class="input-area">
+      <label for="dreamText">il tuo sogno:</label>
+      <textarea id="dreamText" placeholder="scrivi qui oppure usa la dettatura..."></textarea>
+
+      <div class="speech-controls">
+        <button id="startMic">🎙️ inizia dettatura</button>
+        <p id="micStatus">dettatura non attiva</p>
+      </div>
+
+      <button id="saveDream">💾 salva sogno</button>
+    </section>
+
+    <!-- SEARCH AND FILTER -->
+    <section class="search-filter">
+      <h3>Filtra i tuoi sogni</h3>
+      <input type="text" id="search-bar" placeholder="Cerca per tag...">
+      <button id="filter-btn">Filtra</button>
+    </section>
+
+    <!-- DREAMS LIST -->
+    <section id="dreams-container">
+      <div class="dream-placeholder">
+        <p>Caricamento sogni...</p>
+      </div>
+    </section>
+
+    <!-- STATS SECTION -->
+    <section class="stats">
+      <h2>📊 statistiche</h2>
+      <p>Vedi quante volte hai scritto i tuoi sogni ogni mese.</p>
+      <canvas id="dreamChart"></canvas>
+    </section>
+
+    <!-- TAG CLOUD -->
+    <section class="tags">
+      <h2>🏷️ le tue parole chiave più comuni</h2>
+      <div id="tag-cloud" class="tag-cloud"></div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>&copy; 2025 Dream Log. Tutti i diritti riservati.</p>
+  </footer>
+
+  <script src="js/script.js"></script>
+  <script src="js/stats.js"></script>
+  <script src="js/tags.js"></script>
+  <script src="js/dreams.js"></script> <!-- per gestire sogni dinamici e AJAX -->
+  <script src="js/dettatura.js"></script>
+</body>
+</html>
