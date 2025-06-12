@@ -1,5 +1,3 @@
-
-
 let recognition;
 const micBtn = document.getElementById("startMic");
 const outputField = document.getElementById("dreamText");
@@ -10,6 +8,20 @@ if ('webkitSpeechRecognition' in window) {
   recognition.continuous = true;
   recognition.lang = 'it-IT';
   recognition.interimResults = true;
+
+  function formatTranscript(text) {
+    text = text.trim().toLowerCase();
+
+    if (!/[.?!]$/.test(text) && text.split(" ").length > 6) {
+      text += ".";
+    }
+
+    text = text.replace(/\s*,\s*/g, ", ");
+    text = text.replace(/\s*\.\s*/g, ". ");
+    text = text.replace(/\s+/g, " ");
+
+    return text + " ";
+  }
 
   micBtn.addEventListener("click", () => {
     if (micBtn.classList.contains("listening")) {
@@ -28,7 +40,8 @@ if ('webkitSpeechRecognition' in window) {
     for (let i = event.resultIndex; i < event.results.length; ++i) {
       transcript += event.results[i][0].transcript;
     }
-    outputField.value = transcript;
+
+    outputField.value += formatTranscript(transcript);
   };
 
   recognition.onerror = (event) => {
